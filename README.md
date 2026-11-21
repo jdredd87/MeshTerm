@@ -131,14 +131,14 @@ Settings live in `MeshTerm.ini` in `%APPDATA%\MeshTerm` on Windows, or the app's
 You need **Delphi 13 (RAD Studio 37.0)** with the Android SDK, which installs with Delphi. No third-party components are used: the Meshtastic protobuf protocol, AES, MQTT and the QR code encoder are all written in plain Pascal.
 
 ```
-build-x.bat                    Windows 64-bit  ->  Win64\Debug\MeshTermX.exe
-build-x.bat android            Android 64-bit APK
-build-x.bat android install    build, then install with adb
+build.bat                    Windows 64-bit  ->  Win64\Debug\MeshTerm.exe
+build.bat android            Android 64-bit APK
+build.bat android install    build, then install with adb
 ```
 
-Or open `MeshTermX.dproj` in the IDE.
+Or open `MeshTerm.dproj` in the IDE.
 
-**Demo mode** (the screenshots): run `MeshTermX.exe -demo` (add `-tab nodes|map|channels|internet|log` or `-share`). On Android, put an empty `demo.flag` file next to `MeshTerm.ini`. Demo mode never touches your settings or a radio.
+**Demo mode** (the screenshots): run `MeshTerm.exe -demo` (add `-tab nodes|map|channels|internet|log` or `-share`). On Android, put an empty `demo.flag` file next to `MeshTerm.ini`. Demo mode never touches your settings or a radio.
 
 ### Source layout
 

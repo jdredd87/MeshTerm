@@ -385,7 +385,7 @@ begin
   if FDemo then
     StartDemo;
 
-  // for testing: MeshTermX -connect COM11|BLE [-tab nodes|map|channels|internet|log]
+  // for testing: MeshTerm -connect COM11|BLE [-tab nodes|map|channels|internet|log]
   FAutoConnect := '';
   for I := 1 to ParamCount - 1 do
     if SameText(ParamStr(I), '-connect') then

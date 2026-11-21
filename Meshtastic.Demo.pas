@@ -1,6 +1,6 @@
 unit Meshtastic.Demo;
 
-{ Made-up mesh for screenshots and demos (MeshTermX -demo, or a file named
+{ Made-up mesh for screenshots and demos (MeshTerm -demo, or a file named
   demo.flag next to MeshTerm.ini on Android). Every name, node ID and place
   here is invented; the nodes sit around downtown Springfield, Illinois. }
 

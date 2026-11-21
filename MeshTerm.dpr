@@ -1,4 +1,4 @@
-program MeshTermX;
+program MeshTerm;
 
 { MeshTerm for Windows and Android (FireMonkey). Shares the Meshtastic units
   (protocol, client, transports) with the VCL MeshTerm.exe. }

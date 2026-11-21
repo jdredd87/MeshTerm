@@ -200,7 +200,7 @@ begin
       MapZoom := Ini.ReadInteger('Map', 'Zoom', 0);
       MapLat := StrToFloatDef(Ini.ReadString('Map', 'Lat', ''), 999, TFormatSettings.Invariant);
       MapLon := StrToFloatDef(Ini.ReadString('Map', 'Lon', ''), 999, TFormatSettings.Invariant);
-      ShowDeviceLog := Ini.ReadBool('MeshTermX', 'DeviceLog', False);
+      ShowDeviceLog := Ini.ReadBool('MeshTerm', 'DeviceLog', False);
     finally
       Keys.Free;
       Ini.Free;
@@ -378,7 +378,7 @@ begin
   try
     Ini := OpenIni;
     try
-      Ini.WriteBool('MeshTermX', 'DeviceLog', ShowDeviceLog);
+      Ini.WriteBool('MeshTerm', 'DeviceLog', ShowDeviceLog);
       Ini.UpdateFile;
     finally
       Ini.Free;
