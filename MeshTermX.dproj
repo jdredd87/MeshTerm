@@ -322,6 +322,12 @@
         <DCCReference Include="Meshtastic.Client.pas"/>
         <DCCReference Include="Meshtastic.Mqtt.pas"/>
         <DCCReference Include="QrCode.pas"/>
+        <DCCReference Include="Meshtastic.Settings.pas"/>
+        <DCCReference Include="Meshtastic.NodeView.pas"/>
+        <DCCReference Include="Meshtastic.Bridge.pas"/>
+        <DCCReference Include="Meshtastic.Places.pas"/>
+        <DCCReference Include="MapViewX.pas"/>
+        <DCCReference Include="FmxSheet.pas"/>
         <DCCReference Include="MainFormX.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

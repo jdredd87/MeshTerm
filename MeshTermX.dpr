@@ -15,6 +15,12 @@ uses
   Meshtastic.Client in 'Meshtastic.Client.pas',
   Meshtastic.Mqtt in 'Meshtastic.Mqtt.pas',
   QrCode in 'QrCode.pas',
+  Meshtastic.Settings in 'Meshtastic.Settings.pas',
+  Meshtastic.NodeView in 'Meshtastic.NodeView.pas',
+  Meshtastic.Bridge in 'Meshtastic.Bridge.pas',
+  Meshtastic.Places in 'Meshtastic.Places.pas',
+  MapViewX in 'MapViewX.pas',
+  FmxSheet in 'FmxSheet.pas',
   MainFormX in 'MainFormX.pas';
 
 {$R *.res}
