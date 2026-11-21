@@ -1,0 +1,28 @@
+# build output
+Win32/
+Win64/
+Android/
+Android64/
+dcu/
+__history/
+__recovery/
+*.dcu
+*.exe
+*.apk
+*.aab
+*.so
+*.o
+*.map
+*.drc
+*.rsm
+*.tds
+*.local
+*.identcache
+*.stat
+*.dsk
+*.~*
+
+# local notes / test output
+.1.txt
+.2.txt
+resume.bat
