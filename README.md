@@ -1,35 +1,48 @@
 # MeshTerm
 
-A Delphi terminal for [Meshtastic](https://meshtastic.org) LoRa radios. It talks to the radio directly over USB serial or Bluetooth LE using Meshtastic's protobuf API (written by hand, with no extra libraries).
+A Delphi FireMonkey app for [Meshtastic](https://meshtastic.org) LoRa radios, for **Windows and Android**. It talks to the radio directly using Meshtastic's protobuf API (written by hand, with no extra libraries), over:
 
-There are two front ends. They share the protocol, connection and crypto code.
+- **USB serial**: a COM port on Windows, or a USB OTG cable on Android
+- **Bluetooth LE**: on both Windows and Android
 
-| | Platforms | Connects over | Project |
-|---|---|---|---|
-| **MeshTerm** (VCL) | Windows | USB serial | `MeshTerm.dpr` |
-| **MeshTermX** (FireMonkey, in progress) | Windows, Android | USB serial, Bluetooth LE (Android: USB OTG too) | `MeshTermX.dproj` |
-
-## Features (VCL version)
+## Features
 
 - **Messages**: channel and direct messages, with delivery acks. Everything is logged to `messages.log`.
-- **Nodes**: a sortable grid with search and filters (friends, local / internet, direct neighbours, last heard), friends, private notes, distance, battery and signal.
-- **Map**: OpenStreetMap tiles with node markers. You can search for a place and set the radio's fixed location.
+- **Nodes**:
+  - search, filters (friends, local / internet, direct neighbours, has a location or note, last heard) and a choice of sort orders
+  - friends, private notes, and a "no battery" flag
+  - distance, battery and signal for each node, plus a details panel
+- **Map**: OpenStreetMap tiles with node markers (pinch, drag and wheel zoom). You can search for a place and set the radio's fixed location.
 - **Channels**: create private channels with a random 256-bit key, share them as a QR code or link, and join from a link.
 - **Internet**: an optional MQTT bridge (the radio's "proxy to client" mode) to the public Meshtastic server. It can also listen to extra topics and friends.
-- **Alerts**: Windows notifications for direct messages, friends and private channels.
+- **Alerts**: system notifications for direct messages, friends and private channels.
+- MeshTerm reconnects on its own after the radio reboots (for example after a settings change).
 
-Settings are stored in `%APPDATA%\MeshTerm\MeshTerm.ini`. On Android they go in the app's home folder.
+Settings are stored in `MeshTerm.ini`: `%APPDATA%\MeshTerm` on Windows, or the app's home folder on Android.
 
 ## Building
 
-You need Delphi 13 (RAD Studio 37.0). The FireMonkey build also needs the Android SDK, which installs with Delphi.
+You need Delphi 13 (RAD Studio 37.0) with the Android SDK, which installs with Delphi.
 
 ```
-build.bat                      MeshTerm.exe (VCL, Win64)
 build-x.bat                    Win64\Debug\MeshTermX.exe
 build-x.bat android            Android64 APK
 build-x.bat android install    build and install with adb
 ```
+
+## Source layout
+
+| Unit | What it does |
+|---|---|
+| `Meshtastic.Proto` | protobuf encoding and decoding |
+| `Meshtastic.Client` | the radio session |
+| `Meshtastic.Transport`, `.Port`, `.Usb.Android`, `.Ble` | serial / USB / Bluetooth links |
+| `Meshtastic.Crypto`, `.Mqtt`, `.Bridge` | default-key AES, MQTT client, Internet bridge |
+| `Meshtastic.Settings`, `.NodeView`, `.Places` | settings, node filtering and sorting, place search |
+| `MapViewX` | the map control |
+| `FmxSheet` | non-blocking dialogs |
+| `MainFormX` | the UI |
+| `QrCode` | the QR code encoder |
 
 ## Hardware it was built with
 

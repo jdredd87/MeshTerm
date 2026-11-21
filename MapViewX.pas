@@ -3,7 +3,7 @@ unit MapViewX;
 { A small slippy map for FireMonkey (Windows and Android): OpenStreetMap
   tiles loaded by background threads and cached on disk, drag to pan,
   pinch / wheel / +- buttons to zoom, node markers, a search pin and a
-  "tap to place" mode. The FMX twin of MapView.pas (VCL). }
+  "tap to place" mode. }
 
 interface
 

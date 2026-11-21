@@ -1,8 +1,7 @@
 unit Meshtastic.Settings;
 
-{ MeshTerm's saved settings (MeshTerm.ini in <home>\MeshTerm), shared by the
-  Windows and Android front ends. The sections and keys are the same ones the
-  VCL MeshTerm.exe uses, so both see the same friends, notes and so on:
+{ MeshTerm's saved settings: MeshTerm.ini in <home>\MeshTerm (%APPDATA% on
+  Windows, the app's files folder on Android).
 
     [MQTT]   Friends=1a2b3c4d,...  ExtraTopics=msh/US/TX,...
     [Power]  NoBattery=9f8e7d6c,...
@@ -155,7 +154,7 @@ begin
 end;
 
 { A TMemIniFile reads the whole file and writes it back on UpdateFile, so a
-  save only touches the keys we set (the VCL app may own the other ones). }
+  save only touches the keys we set. }
 function TMeshSettings.OpenIni: TMemIniFile;
 begin
   Result := TMemIniFile.Create(IniPath, TEncoding.UTF8);
