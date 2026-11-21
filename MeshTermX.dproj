@@ -328,6 +328,7 @@
         <DCCReference Include="Meshtastic.Places.pas"/>
         <DCCReference Include="MapViewX.pas"/>
         <DCCReference Include="FmxSheet.pas"/>
+        <DCCReference Include="Meshtastic.Demo.pas"/>
         <DCCReference Include="MainFormX.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

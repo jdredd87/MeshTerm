@@ -48,6 +48,7 @@ type
     FEqualRows: TList<TLayout>;
     FTabNames: TDictionary<TTabItem, TPair<string, string>>;   // long, short caption
     FNarrow: Boolean;
+    FDemo: Boolean;
     FNodesDirty, FNodeLoading, FScanning, FMapFitted, FFinding, FRegionWarned: Boolean;
     FBlePorts: TArray<string>;
     FAutoConnect: string;
@@ -146,6 +147,7 @@ type
     procedure DoScan(const AfterFound: TProc = nil);
     procedure StartScan(const AfterFound: TProc);
     procedure FriendsChanged(const Msg: string);
+    procedure StartDemo;
     // connection bar / menu
     procedure ScanClick(Sender: TObject);
     procedure ConnectClick(Sender: TObject);
@@ -257,7 +259,7 @@ uses
   {$ENDIF}
   {$IFDEF MSWINDOWS}FMX.Platform.Win,{$ENDIF}
   FMX.Clipboard, FMX.Surfaces,
-  Meshtastic.Port, Meshtastic.Ble, Meshtastic.Crypto, QrCode;
+  Meshtastic.Port, Meshtastic.Ble, Meshtastic.Crypto, Meshtastic.Demo, QrCode;
 
 {$IFDEF MSWINDOWS}
 function FlashWindow(hWnd: THandle; bInvert: LongBool): LongBool; stdcall; external 'user32.dll';
@@ -328,6 +330,26 @@ begin
   FSettings := TMeshSettings.Create;
   FSettings.OnError := procedure(Msg: string) begin AddLog(Msg); end;
   FSettings.Load;
+  // demo mode (screenshots): made-up mesh, MeshTerm.ini is left alone
+  FDemo := FindCmdLineSwitch('demo', True) or
+    FileExists(System.IOUtils.TPath.Combine(System.IOUtils.TPath.GetDirectoryName(IniPath), 'demo.flag'));
+  if FDemo then
+  begin
+    FSettings.ReadOnly := True;
+    FSettings.Friends.Clear;
+    FSettings.Friends.AddRange([DEMO_FRIEND1, DEMO_FRIEND2]);
+    FSettings.Notes.Clear;
+    for var NP in DemoNotes do
+      FSettings.Notes.AddOrSetValue(NP.Key, NP.Value);
+    FSettings.NoBattery.Clear;
+    FSettings.ExtraTopics.Clear;
+    FSettings.NodeShow := 0;
+    FSettings.NodeHeard := 0;
+    FSettings.NodeSortCol := NC_HEARD;
+    FSettings.NodeSortDesc := False;
+    FSettings.FriendsTop := True;
+    FSettings.MapZoom := 0;
+  end;
   FClient := TMeshClient.Create;
   FClient.OnLog := ClientLog;
   FClient.OnDeviceLog := ClientDeviceLog;
@@ -360,6 +382,8 @@ begin
   FTimer := TTimer.Create(Self);
   FTimer.Interval := 1000;
   FTimer.OnTimer := TimerTick;
+  if FDemo then
+    StartDemo;
 
   // for testing: MeshTermX -connect COM11|BLE [-tab nodes|map|channels|internet|log]
   FAutoConnect := '';
@@ -1194,6 +1218,8 @@ begin
   Result.ItemData.Detail := Detail;
   Result.Height := 54;
   lbChat.ScrollToItem(Result);
+  if FSettings.ReadOnly then
+    Exit;
   // a permanent record next to MeshTerm.ini
   try
     TFile.AppendAllText(MessagesLogPath, Format('%s'#9'%s'#9'%s'#9'%s'#9'%s',
@@ -1215,6 +1241,34 @@ begin
   RebuildMap;
   if Msg <> '' then
     AddLog(Msg);
+end;
+
+procedure TMainFormX.StartDemo;
+var
+  M: TDemoMessage;
+  I: Integer;
+begin
+  cbPort.Items.Add('Demo (no radio)');
+  cbPort.ItemIndex := cbPort.Items.Count - 1;
+  FClient.LoadDemo(DEMO_ME, DemoNodes, DemoChannels, DemoLoRa, DemoMetadata);
+  for M in DemoMessages do
+    AddChat(M.Text, M.Detail, '', '', '');
+  edFriends.Text := FSettings.FriendsText;
+  RefreshNodeRows;
+  for I := 0 to lbNodes.Count - 1 do
+    if Cardinal(lbNodes.ListItems[I].Tag) = DEMO_FRIEND1 then
+      lbNodes.ItemIndex := I;
+  UpdateNodeInfo;
+  // -share: open the QR code of the private channel (for a screenshot)
+  if FindCmdLineSwitch('share', True) then
+    for I := 0 to lbChannels.Count - 1 do
+      if lbChannels.ListItems[I].Tag = 1 then
+      begin
+        lbChannels.ItemIndex := I;
+        Tabs.ActiveTab := tabChannels;
+        ShareChannelClick(nil);
+      end;
+  AddLog('Demo mode: a made-up mesh for screenshots. Nothing is sent and MeshTerm.ini is not changed.');
 end;
 
 { ---------------- connection bar ---------------- }

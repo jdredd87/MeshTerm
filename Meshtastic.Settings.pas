@@ -36,6 +36,7 @@ type
     MapZoom: Integer;
     MapLat, MapLon: Double;
     ShowDeviceLog: Boolean;
+    ReadOnly: Boolean;                   // demo mode: never write MeshTerm.ini
     constructor Create;
     destructor Destroy; override;
     procedure Load;
@@ -237,6 +238,8 @@ procedure TMeshSettings.SaveFriendsAndTopics;
 var
   Ini: TMemIniFile;
 begin
+  if ReadOnly then
+    Exit;
   try
     Ini := OpenIni;
     try
@@ -256,6 +259,8 @@ procedure TMeshSettings.SaveNoBattery;
 var
   Ini: TMemIniFile;
 begin
+  if ReadOnly then
+    Exit;
   try
     Ini := OpenIni;
     try
@@ -275,6 +280,8 @@ var
   Ini: TMemIniFile;
   Note: string;
 begin
+  if ReadOnly then
+    Exit;
   try
     Ini := OpenIni;
     try
@@ -296,6 +303,8 @@ procedure TMeshSettings.SaveNodeView;
 var
   Ini: TMemIniFile;
 begin
+  if ReadOnly then
+    Exit;
   try
     Ini := OpenIni;
     try
@@ -317,6 +326,8 @@ procedure TMeshSettings.SaveAlerts;
 var
   Ini: TMemIniFile;
 begin
+  if ReadOnly then
+    Exit;
   try
     Ini := OpenIni;
     try
@@ -338,6 +349,8 @@ procedure TMeshSettings.SaveMapView(Zoom: Integer; Lat, Lon: Double);
 var
   Ini: TMemIniFile;
 begin
+  if ReadOnly then
+    Exit;
   MapZoom := Zoom;
   MapLat := Lat;
   MapLon := Lon;
@@ -360,6 +373,8 @@ procedure TMeshSettings.SaveMisc;
 var
   Ini: TMemIniFile;
 begin
+  if ReadOnly then
+    Exit;
   try
     Ini := OpenIni;
     try

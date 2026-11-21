@@ -83,6 +83,11 @@ type
     procedure SetChannel(Index, Role: Integer; const SettingsRaw: TBytes);
     procedure SetFixedPosition(Lat, Lon: Double);
     procedure ClearFixedPosition;
+    { Screenshots / demos: pretend to be connected to a radio with these nodes
+      and channels (nothing is sent anywhere). }
+    procedure LoadDemo(MyNum: Cardinal; const ANodes: TArray<TNodeInfo>;
+      const AChannels: TArray<TChannelInfo>; const ALoRa: TLoRaConfig;
+      const AMeta: TDeviceMetadata);
     property State: TMeshState read FState;
     property MyNodeNum: Cardinal read FMyNodeNum;
     property MyInfo: TMyInfo read FMyInfo;
@@ -758,6 +763,30 @@ begin
   UpdateNode(N);
   FCheckPos := 2;
   Log('Removing this radio''s fixed location', []);
+end;
+
+procedure TMeshClient.LoadDemo(MyNum: Cardinal; const ANodes: TArray<TNodeInfo>;
+  const AChannels: TArray<TChannelInfo>; const ALoRa: TLoRaConfig; const AMeta: TDeviceMetadata);
+var
+  N: TNodeInfo;
+  C: TChannelInfo;
+begin
+  Disconnect;
+  FNodes.Clear;
+  FChannels.Clear;
+  FMyNodeNum := MyNum;
+  FLoRa := ALoRa;
+  FMetadata := AMeta;
+  FMqtt := Default(TMqttConfig);
+  FMqtt.Valid := True;
+  for C in AChannels do
+    FChannels.Add(C);
+  for N in ANodes do
+    FNodes.AddOrSetValue(N.Num, N);
+  SetState(msReady);
+  for N in ANodes do
+    if Assigned(FOnNodeUpdated) then
+      FOnNodeUpdated(Self, N);
 end;
 
 function TMeshClient.ChannelName(Index: Integer): string;

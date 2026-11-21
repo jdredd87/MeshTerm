@@ -21,6 +21,7 @@ uses
   Meshtastic.Places in 'Meshtastic.Places.pas',
   MapViewX in 'MapViewX.pas',
   FmxSheet in 'FmxSheet.pas',
+  Meshtastic.Demo in 'Meshtastic.Demo.pas',
   MainFormX in 'MainFormX.pas';
 
 {$R *.res}
